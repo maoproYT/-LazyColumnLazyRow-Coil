@@ -38,7 +38,6 @@ fun PostCard(
     onLikeClick: (Post) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    // TODO 1: Column con fillMaxWidth para apilar los 4 bloques verticalmente
     Column(modifier = modifier.fillMaxWidth()) {
 
         // ── 1. HEADER ──
@@ -60,7 +59,6 @@ fun PostCard(
         // ── 3. ACCIONES ──
         PostActions(
             post = post,
-            // TODO 2: pasa el lambda onLikeClick invocándolo con el post actual
             onLikeClick = { onLikeClick(post) }
         )
 
@@ -110,7 +108,6 @@ private fun PostActions(
     post: Post,
     onLikeClick: () -> Unit
 ) {
-    // TODO 3: variable "liked" que recuerda el estado del like
     var liked by remember { mutableStateOf(post.isLiked) }
 
     Row(
@@ -120,16 +117,13 @@ private fun PostActions(
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = {
-            // TODO 4: al hacer clic, invierte el estado de "liked"
             liked = !liked
             onLikeClick()
         }) {
             Icon(
-                // TODO 5: si "liked" es true muestra Favorite, si no FavoriteBorder
                 imageVector = if (liked) Icons.Filled.Favorite
                 else Icons.Outlined.FavoriteBorder,
                 contentDescription = "Like",
-                // TODO 6: si "liked" es true el icono es rojo, si no negro
                 tint = if (liked) Color.Red else Color.Black,
                 modifier = Modifier.size(28.dp)
             )
@@ -155,7 +149,6 @@ private fun PostFooter(post: Post) {
             .padding(horizontal = 16.dp)
             .padding(bottom = 10.dp)
     ) {
-        // TODO 7: texto "${post.likes} Me gusta" en negrita, fontSize 14.sp
         Text(
             text = "${post.likes} Me gusta",
             fontWeight = FontWeight.Bold,

@@ -1,3 +1,5 @@
+package me.mauricioherrera.feedinstagram.ui.screens
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,12 +30,12 @@ import me.mauricioherrera.feedinstagram.ui.components.StoriesRow
 
 @Composable
 fun FeedScreen() {
-    // TODO 1: obtén los posts y stories del DataSource usando "remember"
+    // Obtiene los posts y stories del DataSource usando "remember"
     val posts = remember { DataSource.getPosts() }
     val stories = remember { DataSource.getStories() }
 
     Scaffold(
-        // TODO 2: parámetro del Scaffold que recibe la barra superior -> topBar
+        // Parámetro del Scaffold que recibe la barra superior
         topBar = { InstagramTopBar() }
     ) { paddingValues ->
 
@@ -44,17 +46,15 @@ fun FeedScreen() {
             state = rememberLazyListState()
         ) {
 
-            // ── Las stories van como un ítem único dentro del LazyColumn ──
-            // TODO 3: usa "item" (no "items") con key = "stories_row"
+            /* ── Las stories van como un ítem único dentro del LazyColumn ── */
             item(key = "stories_row") {
                 StoriesRow(stories = stories)
                 HorizontalDivider()
             }
 
-            // ── Los posts se iteran con items ──
+            /* ── Los posts se iteran con items ── */
             items(
                 items = posts,
-                // TODO 4: completa el key para identificar cada post por su id
                 key = { post -> post.id }
             ) { post ->
                 PostCard(
@@ -68,7 +68,7 @@ fun FeedScreen() {
     }
 }
 
-// ── TOP BAR estilo Instagram ──
+/* ── TOP BAR estilo Instagram ── */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstagramTopBar() {
@@ -95,4 +95,3 @@ fun InstagramTopBar() {
         )
     )
 }
- 
