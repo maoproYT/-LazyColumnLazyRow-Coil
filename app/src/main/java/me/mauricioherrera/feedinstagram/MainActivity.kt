@@ -1,5 +1,6 @@
 package me.mauricioherrera.feedinstagram
 
+import FeedScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,37 +12,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import me.mauricioherrera.feedinstagram.model.Post
 import me.mauricioherrera.feedinstagram.ui.theme.FeedInstagramTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Ejercicio sección 01
+        val post = Post(1, "yo", "", "", 0, "Prueba")
+        println(post)
+        println(post.copy(isLiked = true))
+
         setContent {
-            FeedInstagramTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            setContent {
+
+
             }
         }
-    }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FeedInstagramTheme {
-        Greeting("Android")
-    }
-}
+
+

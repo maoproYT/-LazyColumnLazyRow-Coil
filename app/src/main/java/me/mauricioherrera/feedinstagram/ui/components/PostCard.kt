@@ -1,10 +1,16 @@
 package me.mauricioherrera.feedinstagram.ui.components
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
+
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -15,16 +21,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.shape.CircleShape
-import com.android.volley.toolbox.ImageRequest
-
-
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import me.mauricioherrera.feedinstagram.model.Post
-
 
 @Composable
 fun PostCard(
@@ -32,14 +38,13 @@ fun PostCard(
     onLikeClick: (Post) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth()
-    ) {
+    // TODO 1: Column con fillMaxWidth para apilar los 4 bloques verticalmente
+    Column(modifier = modifier.fillMaxWidth()) {
 
-        // 1. HEADER
+        // ── 1. HEADER ──
         PostHeader(post = post)
 
-        // 2. IMAGEN PRINCIPAL
+        // ── 2. IMAGEN PRINCIPAL ──
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(post.imageUrl)
@@ -52,22 +57,21 @@ fun PostCard(
             contentScale = ContentScale.Crop
         )
 
-        // 3. ACCIONES
+        // ── 3. ACCIONES ──
         PostActions(
             post = post,
-            // TODO: pasa el lambda onLikeClick invocándolo con el post actual
+            // TODO 2: pasa el lambda onLikeClick invocándolo con el post actual
             onLikeClick = { onLikeClick(post) }
         )
 
-        // 4. FOOTER
+        // ── 4. FOOTER ──
         PostFooter(post = post)
 
-        Divider(color = Color.LightGray.copy(alpha = 0.3f))
+        HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f))
     }
 }
 
-
-// ---------- HEADER ----------
+// ── HEADER ──
 @Composable
 private fun PostHeader(post: Post) {
     Row(
@@ -85,16 +89,13 @@ private fun PostHeader(post: Post) {
                 .border(1.dp, Color.LightGray, CircleShape),
             contentScale = ContentScale.Crop
         )
-
         Spacer(Modifier.width(10.dp))
-
         Text(
             text = post.username,
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp,
             modifier = Modifier.weight(1f)
         )
-
         Icon(
             imageVector = Icons.Default.MoreVert,
             contentDescription = "Más opciones",
@@ -103,15 +104,13 @@ private fun PostHeader(post: Post) {
     }
 }
 
-
-// ---------- ACCIONES ----------
+// ── ACCIONES ──
 @Composable
 private fun PostActions(
     post: Post,
     onLikeClick: () -> Unit
 ) {
-    // TODO: declara una variable "liked" que recuerde el estado del like
-    // Pista: usa "var" con "remember" y "mutableStateOf" inicializado con post.isLiked
+    // TODO 3: variable "liked" que recuerda el estado del like
     var liked by remember { mutableStateOf(post.isLiked) }
 
     Row(
@@ -120,85 +119,52 @@ private fun PostActions(
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
-        IconButton(
-            onClick = {
-                // TODO: al hacer clic, invierte el estado de "liked"
-                liked = !liked
-                onLikeClick()
-            }
-        ) {
+        IconButton(onClick = {
+            // TODO 4: al hacer clic, invierte el estado de "liked"
+            liked = !liked
+            onLikeClick()
+        }) {
             Icon(
-                // TODO: si "liked" es true muestra Icons.Filled.Favorite,
-                // si no Icons.Outlined.FavoriteBorder
-                imageVector = if (liked)
-                    Icons.Filled.Favorite
-                else
-                    Icons.Outlined.FavoriteBorder,
-
+                // TODO 5: si "liked" es true muestra Favorite, si no FavoriteBorder
+                imageVector = if (liked) Icons.Filled.Favorite
+                else Icons.Outlined.FavoriteBorder,
                 contentDescription = "Like",
-
-                // TODO: si "liked" es true el icono es Color.Red,
-                // si no Color.Black
-                tint = if (liked)
-                    Color.Red
-                else
-                    Color.Black,
-
+                // TODO 6: si "liked" es true el icono es rojo, si no negro
+                tint = if (liked) Color.Red else Color.Black,
                 modifier = Modifier.size(28.dp)
             )
         }
-
         IconButton(onClick = {}) {
-            Icon(
-                Icons.Outlined.ChatBubbleOutline,
-                "Comentar"
-            )
+            Icon(Icons.Outlined.ChatBubbleOutline, "Comentar")
         }
-
         IconButton(onClick = {}) {
-            Icon(
-                Icons.Outlined.Send,
-                "Enviar"
-            )
+            Icon(Icons.AutoMirrored.Outlined.Send, "Enviar")
         }
-
         Spacer(Modifier.weight(1f))
-
         IconButton(onClick = {}) {
-            Icon(
-                Icons.Outlined.BookmarkBorder,
-                "Guardar"
-            )
+            Icon(Icons.Outlined.BookmarkBorder, "Guardar")
         }
     }
 }
 
-
-// ---------- FOOTER ----------
+// ── FOOTER ──
 @Composable
 private fun PostFooter(post: Post) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .padding(bottom = 10.dp)
     ) {
-
-        // TODO: muestra el texto post.likes Me gusta en negrita, fontSize 14.sp
+        // TODO 7: texto "${post.likes} Me gusta" en negrita, fontSize 14.sp
         Text(
             text = "${post.likes} Me gusta",
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp
         )
-
         Spacer(Modifier.height(2.dp))
-
         Text(
             text = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(fontWeight = FontWeight.Bold)
-                ) {
+                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
                     append(post.username + " ")
                 }
                 append(post.caption)

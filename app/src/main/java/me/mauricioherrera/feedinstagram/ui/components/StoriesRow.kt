@@ -27,6 +27,7 @@ fun StoriesRow(stories: List<Story>) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+
         // TODO: ¿qué parámetro controla el espacio horizontal entre stories?
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -44,6 +45,7 @@ fun StoryItem(story: Story) {
 
     // TODO: si hasSeen es false → gradiente colorido, si es true → gris
     val borderBrush = if (!story.hasSeen) {
+
         Brush.linearGradient(
             colors = listOf(
                 Color(0xFFd90433),
@@ -51,7 +53,9 @@ fun StoryItem(story: Story) {
                 Color(0xFFbc1888)
             )
         )
+
     } else {
+
         SolidColor(Color.LightGray)
     }
 
@@ -59,30 +63,39 @@ fun StoryItem(story: Story) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.width(70.dp)
     ) {
+
         Box(
             modifier = Modifier
                 .size(64.dp)
                 .border(
                     width = 2.dp,
                     brush = borderBrush,
+
                     // TODO: ¿qué shape hace que el borde sea circular?
                     shape = CircleShape
                 )
                 .padding(3.dp),
+
             contentAlignment = Alignment.Center
         ) {
+
             AsyncImage(
                 model = story.profileImageUrl,
                 contentDescription = story.username,
+
                 modifier = Modifier
                     .size(56.dp)
+
                     // TODO: agrega .clip(CircleShape) para que la imagen sea redonda
                     .clip(CircleShape),
+
                 contentScale = ContentScale.Crop
             )
         }
 
-        Spacer(Modifier.height(4.dp))
+        Spacer(
+            Modifier.height(4.dp)
+        )
 
         Text(
             text = story.username,
